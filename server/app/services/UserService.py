@@ -1,7 +1,6 @@
 from app.db.dbconnect import SessionLocal
 from app.db.schemas import UserSchema
 from app.models.user import UserModel
-import hashlib
 
 dbHandler = SessionLocal()
 
