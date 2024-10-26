@@ -1,6 +1,6 @@
 from app.db.dbconnect import SessionLocal
 from app.db.schemas import UserSchema
-from app.models.user import UserModel
+from app.api.payloads.user import UserPayload
 
 dbHandler = SessionLocal()
 
@@ -24,7 +24,7 @@ async def get_multi_users(page: int, perpage: int):
     return dbHandler.query(UserSchema).offset(offset).limit(perpage).all()
 
 
-async def insert_user(user_info: UserModel):
+async def insert_user(user_info: UserPayload):
     try:
         new_user = UserSchema(
             username=user_info.username,

@@ -1,6 +1,7 @@
 from fastapi import APIRouter, Query
+from fastapi.responses import JSONResponse
 
-from app.models.user import UserModel
+from app.api.payloads.user import UserPayload
 from app.services import UserService
 
 user_api = APIRouter()
@@ -17,27 +18,27 @@ async def get_user_for_page(page: int = Query(1, ge=1), perpage: int = Query(10,
 
 
 @user_api.post("/signup")
-async def sign_up_user(new_user: UserModel):
+async def sign_up_user(new_user: UserPayload):
     result = await UserService.insert_user(new_user)
     if result:
-        return {"Status": "Success"}
+        return JSONResponse(status_code=200, content={"status": "success"})
     else:
-        return {"Status": "Failed"}
+        return JSONResponse(status_code=500, content={"status": "failed"})
 
 
 @user_api.post("/signin")
-async def sign_in_user(user: UserModel):
+async def sign_in_user(user: UserPayload):
     result = await UserService.auth_user(username=user.username)
     if result:
-        return {"Status": "Success"}
+        return JSONResponse(status_code=200, content={"status": "success"})
     else:
-        return {"Status": "Failed"}
+        return JSONResponse(status_code=500, content={"status": "failed"})
 
 
 @user_api.delete("/")
 async def delete_user(id: int):
     result = await UserService.delete_user(id=id)
     if result:
-        return {"Status": "Success"}
+        return JSONResponse(status_code=200, content={"status": "success"})
     else:
-        return {"Status": "Failed"}
+        return JSONResponse(status_code=500, content={"status": "failed"})
